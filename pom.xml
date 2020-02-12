@@ -17,36 +17,30 @@
     </plugins>
   </build>
   <dependencies>
-  
+  	<dependency>
+	  <groupId>com.google.code.findbugs</groupId>
+	  <artifactId>jsr305</artifactId>
+	  <version>3.0.2</version>
+	</dependency>
   	<dependency>
   		<groupId>org.eclipse.milo</groupId>
   		<artifactId>sdk-client</artifactId>
-  		<version>0.2.4</version>
+  		<version>0.3.7</version>
   	</dependency>
   	<dependency>
   		<groupId>org.eclipse.milo</groupId>
   		<artifactId>sdk-server</artifactId>
-  		<version>0.2.4</version>
+  		<version>0.3.7</version>
   	</dependency>
   	<dependency>
   		<groupId>org.eclipse.milo</groupId>
   		<artifactId>stack-client</artifactId>
-  		<version>0.2.4</version>
+  		<version>0.3.7</version>
   	</dependency>
   	<dependency>
   		<groupId>org.eclipse.milo</groupId>
   		<artifactId>stack-server</artifactId>
-  		<version>0.2.4</version>
+  		<version>0.3.7</version>
   	</dependency>
-    <dependency>
-        <groupId>org.bouncycastle</groupId>
-        <artifactId>bcprov-jdk15on</artifactId>
-        <version>1.58</version>
-    </dependency>
-      <dependency>
-          <groupId>org.bouncycastle</groupId>
-          <artifactId>bcpkix-jdk15on</artifactId>
-          <version>1.58</version>
-      </dependency>
   </dependencies>
 </project>

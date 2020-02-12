@@ -46,7 +46,7 @@ public class KeyStoreLoaderServer {
     private X509Certificate serverCertificate;
     private KeyPair serverKeyPair;
 
-    KeyStoreLoaderServer load(File baseDir) throws Exception {
+    public KeyStoreLoaderServer load(File baseDir) throws Exception {
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
 
         File serverKeyStore = baseDir.toPath().resolve("example-server.pfx").toFile();
@@ -103,7 +103,7 @@ public class KeyStoreLoaderServer {
         return this;
     }
 
-    X509Certificate getServerCertificate() {
+    public X509Certificate getServerCertificate() {
         return serverCertificate;
     }
 
@@ -111,7 +111,7 @@ public class KeyStoreLoaderServer {
         return serverCertificateChain;
     }
 
-    KeyPair getServerKeyPair() {
+    public KeyPair getServerKeyPair() {
         return serverKeyPair;
     }
 

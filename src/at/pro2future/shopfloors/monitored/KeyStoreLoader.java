@@ -1,21 +1,19 @@
 /*
- * Copyright (c) 2017 Kevin Herron
+ * Copyright (c) 2019 the Eclipse Milo Authors
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * and Eclipse Distribution License v1.0 which accompany this distribution.
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
  *
- * The Eclipse Public License is available at
- *   http://www.eclipse.org/legal/epl-v10.html
- * and the Eclipse Distribution License is available at
- *   http://www.eclipse.org/org/documents/edl-v10.html.
+ * SPDX-License-Identifier: EPL-2.0
  */
 
 package at.pro2future.shopfloors.monitored;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyStore;
@@ -30,7 +28,7 @@ import org.eclipse.milo.opcua.stack.core.util.SelfSignedCertificateGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class KeyStoreLoader {
+public class KeyStoreLoader {
 
     private static final Pattern IP_ADDR_PATTERN = Pattern.compile(
         "^(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
@@ -43,14 +41,14 @@ class KeyStoreLoader {
     private X509Certificate clientCertificate;
     private KeyPair clientKeyPair;
 
-    KeyStoreLoader load(File baseDir) throws Exception {
+    public KeyStoreLoader load(Path baseDir) throws Exception {
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
 
-        File serverKeyStore = baseDir.toPath().resolve("example-client.pfx").toFile();
+        Path serverKeyStore = baseDir.resolve("example-client.pfx");
 
         logger.info("Loading KeyStore at {}", serverKeyStore);
 
-        if (!serverKeyStore.exists()) {
+        if (!Files.exists(serverKeyStore)) {
             keyStore.load(null, PASSWORD);
 
             KeyPair keyPair = SelfSignedCertificateGenerator.generateRsaKeyPair(2048);
@@ -78,9 +76,13 @@ class KeyStoreLoader {
             X509Certificate certificate = builder.build();
 
             keyStore.setKeyEntry(CLIENT_ALIAS, keyPair.getPrivate(), PASSWORD, new X509Certificate[]{certificate});
-            keyStore.store(new FileOutputStream(serverKeyStore), PASSWORD);
+            try (OutputStream out = Files.newOutputStream(serverKeyStore)) {
+                keyStore.store(out, PASSWORD);
+            }
         } else {
-            keyStore.load(new FileInputStream(serverKeyStore), PASSWORD);
+            try (InputStream in = Files.newInputStream(serverKeyStore)) {
+                keyStore.load(in, PASSWORD);
+            }
         }
 
         Key serverPrivateKey = keyStore.getKey(CLIENT_ALIAS, PASSWORD);
@@ -93,11 +95,11 @@ class KeyStoreLoader {
         return this;
     }
 
-    X509Certificate getClientCertificate() {
+    public X509Certificate getClientCertificate() {
         return clientCertificate;
     }
 
-    KeyPair getClientKeyPair() {
+    public KeyPair getClientKeyPair() {
         return clientKeyPair;
     }
 

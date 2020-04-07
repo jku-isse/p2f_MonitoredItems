@@ -379,6 +379,25 @@ public class ConfigurableServer {
     	return Double.MIN_VALUE;
     }
     
+    public Boolean readBoolean(NodeId nodeId) {
+    	UaNode theNode = configurableSpace.getTheNodeManager().get(nodeId);
+    	if(theNode != null) {
+    		BaseVariableNode bvn = (BaseVariableNode)theNode;
+    		return (Boolean)bvn.getValue().getValue().getValue();
+    	}
+    	return false;
+    }
+    
+    public boolean writeBoolean(NodeId nodeId, Boolean val) {
+    	UaNode theNode = configurableSpace.getTheNodeManager().get(nodeId);
+    	if(theNode != null) {
+    		BaseVariableNode bvn = (BaseVariableNode)theNode;
+    		bvn.setValue(new DataValue(new Variant(val)));
+    		return true;
+    	}
+    	return false;
+    }
+    
     public boolean writeInteger(NodeId nodeId, Integer val) {
     	UaNode theNode = configurableSpace.getTheNodeManager().get(nodeId);
     	if(theNode != null) {

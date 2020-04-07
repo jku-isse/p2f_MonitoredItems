@@ -278,6 +278,26 @@ public class MiloConfiguration implements MonitoredItemConfiguration {
 	}
 
 	@Override
+	public CompletableFuture<StatusCode> writeBoolean(NodeId nodeId, Boolean value) {
+		CompletableFuture<StatusCode> resFut = new CompletableFuture<>();
+		boolean res = server.writeBoolean(nodeId, value);
+		if(res) {
+			resFut.complete(StatusCode.GOOD);
+		} else {
+			resFut.complete(StatusCode.BAD);
+		}
+		return resFut;
+	}
+	
+	@Override
+	public CompletableFuture<Boolean> readBoolean(NodeId nodeId) {
+		CompletableFuture<Boolean> resFut = new CompletableFuture<>();
+		Boolean res = server.readBoolean(nodeId);
+		resFut.complete(res);
+		return resFut;
+	}
+
+	@Override
 	public CompletableFuture<Float> readFloat(NodeId nodeId) {
 		CompletableFuture<Float> resFut = new CompletableFuture<>();
 		Float res = server.readFloat(nodeId);

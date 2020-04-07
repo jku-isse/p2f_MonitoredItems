@@ -39,6 +39,8 @@ public interface MonitoredItemConfiguration {
 	public CompletableFuture<StatusCode> writeFloat(NodeId nodeId, Float value);
 	public CompletableFuture<StatusCode> writeInteger(NodeId nodeId, Integer value);
 	public CompletableFuture<StatusCode> writeDouble(NodeId nodeId, Double value);
+	public CompletableFuture<StatusCode> writeBoolean(NodeId nodeId, Boolean value);
+	public CompletableFuture<Boolean> readBoolean(NodeId nodeId);
 	public CompletableFuture<Float> readFloat(NodeId nodeId);
 	public CompletableFuture<Integer> readInteger(NodeId nodeId);
 	public CompletableFuture<Double> readDouble(NodeId nodeId);

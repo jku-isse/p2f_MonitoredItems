@@ -291,6 +291,29 @@ public class OpenServerConfiguration implements MonitoredItemConfiguration {
 		        return writeFuture;
 		 }
 
+		 public CompletableFuture<StatusCode> writeBoolean(NodeId nodeId, Boolean value) {
+			 Variant varPower = new Variant(value);
+		        DataValue writing = new DataValue(varPower);
+		        CompletableFuture<StatusCode> writeFuture = client.writeValue(nodeId, writing);
+		        return writeFuture;
+		 }
+
+		 public CompletableFuture<Boolean> readBoolean(NodeId nodeId) {
+
+		     CompletableFuture<DataValue> dataFuture = client.readValue(0.0, TimestampsToReturn.Both, nodeId);
+		     DataValue dValue;
+			try {
+				dValue = dataFuture.get();
+			     Boolean f = (boolean)dValue.getValue().getValue();
+			        CompletableFuture<Boolean> readFuture = new CompletableFuture<>();
+			        readFuture.complete(f);
+			        return readFuture;
+			} catch (InterruptedException | ExecutionException e) {
+				CompletableFuture<Boolean> exFuture = new CompletableFuture<>();
+				exFuture.completeExceptionally(new Exception("Read Error"));
+				return exFuture;
+			}
+		 }
 		 public CompletableFuture<Float> readFloat(NodeId nodeId) {
 
 		     CompletableFuture<DataValue> dataFuture = client.readValue(0.0, TimestampsToReturn.Both, nodeId);
